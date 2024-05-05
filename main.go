@@ -1,12 +1,18 @@
 package main
 
 import (
-"net/http"
-"github.com/gin-gonic/gin"
-"coffeeshop/coffee"
+	"coffeeshop/coffee"
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
+
+	portNumber := os.Getenv("APP_PORT")
+
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*.html")
 	
@@ -16,7 +22,9 @@ func main() {
 		})
 	})
 	r.GET("/home", coffeeList)
-	r.Run(":8080") 
+	
+	fmt.Printf("Starting the app on port %s", portNumber)
+	r.Run(fmt.Sprintf(":%s", portNumber)) 
 }
 
 func coffeeList(c *gin.Context) {
